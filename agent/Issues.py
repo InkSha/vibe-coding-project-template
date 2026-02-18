@@ -70,6 +70,8 @@ def use_prompt(issue: Issue, api_type: str, api_key: str):
     else:
         raise ValueError(f'API type {api_type} is not supported')
 
+    # print(f"data: \n{data}")
+
     if data == '':
         raise ValueError('AI response is empty')
 
@@ -90,7 +92,7 @@ def main():
     issue_title = os.environ.get('ISSUE_TITLE', '')
     issue_body = os.environ.get('ISSUE_BODY', '')
     repo_name = os.environ.get('REPO_NAME', '')
-    api_type = os.environ.get('API_TYPE', '')
+    api_type = os.environ.get('API_TYPE', '').lower()
     api_key = os.environ.get('API_KEY', '')
 
     issue = Issue()
@@ -100,3 +102,6 @@ def main():
     issue.repoName = repo_name
 
     use_prompt(issue, api_type, api_key)
+
+if __name__ == "__main__":
+    main()

@@ -7,8 +7,13 @@ function getGateway() {
     throw new Error('AI_GATEWAY_URL is required')
   }
 
+  if (!process.env.AI_API_KEY) {
+    throw new Error('AI_API_KEY is required')
+  }
+
   return createGateway({
-    baseURL: process.env.AI_GATEWAY_URL
+    baseURL: process.env.AI_GATEWAY_URL,
+    apiKey: process.env.AI_API_KEY
   })
 }
 

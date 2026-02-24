@@ -1,5 +1,5 @@
-import { generateText } from 'ai'
-import { createGateway } from 'ai'
+import { generateText, createGateway } from 'ai'
+import { createOpenAICompatible } from '@ai-sdk/openai-compatible'
 import { Octokit } from '@octokit/rest'
 
 function getGateway() {
@@ -17,6 +17,23 @@ function getGateway() {
   })
 }
 
+function getProvider() {
+  if (!process.env.AI_GATEWAY_URL) {
+    throw new Error('AI_GATEWAY_URL is required')
+  }
+
+  if (!process.env.AI_API_KEY) {
+    throw new Error('AI_API_KEY is required')
+  }
+
+  return createOpenAICompatible({
+    name: 'mountsea',
+    baseURL: process.env.AI_GATEWAY_URL,
+    apiKey: process.env.AI_API_KEY,
+    includeUsage: true
+  })
+}
+
 function getOctokit() {
   if (!process.env.GITHUB_TOKEN) {
     throw new Error('GITHUB_TOKEN is required')
@@ -28,7 +45,8 @@ function getOctokit() {
 }
 
 async function main() {
-  const gateway = getGateway()
+  // const gateway = getGateway()
+  const gateway = getProvider()
   const octokit = getOctokit()
 
   const { ISSUE_NUMBER, ISSUE_TITLE, ISSUE_BODY, REPO_OWNER, REPO_NAME, AI_MODEL } = process.env
@@ -46,14 +64,14 @@ async function main() {
     prompt: `Issue title: ${ISSUE_TITLE}\n\nIssue content:\n${ISSUE_BODY}`
   })
 
-  await octokit.issues.createComment({
-    owner: REPO_OWNER || '',
-    repo: REPO_NAME || '',
-    issue_number: parseInt(ISSUE_NUMBER || ''),
-    body: `🤖 ${AI_MODEL} reply:\n\n${text}`
-  })
+  // await octokit.issues.createComment({
+  //   owner: REPO_OWNER || '',
+  //   repo: REPO_NAME || '',
+  //   issue_number: parseInt(ISSUE_NUMBER || ''),
+  //   body: `🤖 ${AI_MODEL} reply:\n\n${text}`
+  // })
 
-  console.log('Done')
+  console.log('Done', text)
 }
 
 main().catch(console.error)

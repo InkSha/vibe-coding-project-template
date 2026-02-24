@@ -1,6 +1,11 @@
 {
   "dependencies": {
+    "@ai-sdk/openai-compatible": "^2.0.30",
     "@octokit/rest": "^22.0.1",
     "ai": "^6.0.97"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.0",
+    "typescript": "^5.9.3"
   }
 }

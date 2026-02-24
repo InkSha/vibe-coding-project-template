@@ -45,7 +45,6 @@ function getOctokit() {
 }
 
 async function main() {
-  // const gateway = getGateway()
   const gateway = getProvider()
   const octokit = getOctokit()
 
@@ -64,12 +63,12 @@ async function main() {
     prompt: `Issue title: ${ISSUE_TITLE}\n\nIssue content:\n${ISSUE_BODY}`
   })
 
-  // await octokit.issues.createComment({
-  //   owner: REPO_OWNER || '',
-  //   repo: REPO_NAME || '',
-  //   issue_number: parseInt(ISSUE_NUMBER || ''),
-  //   body: `🤖 ${AI_MODEL} reply:\n\n${text}`
-  // })
+  await octokit.issues.createComment({
+    owner: REPO_OWNER || '',
+    repo: REPO_NAME || '',
+    issue_number: parseInt(ISSUE_NUMBER || ''),
+    body: `🤖 ${AI_MODEL} reply:\n\n${text}`
+  })
 
   console.log('Done', text)
 }
